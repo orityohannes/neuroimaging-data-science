@@ -1,0 +1,5 @@
+# Excercise 2.1 Answers
+1. touch ~/new_file.txt
+2. touch new_file.txt
+3. mv ~/new_file.txt ~/Documents/
+4. mv moves a file, cp copies a file
