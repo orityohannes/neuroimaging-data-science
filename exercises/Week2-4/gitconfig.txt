@@ -1,0 +1,4 @@
+# Excercise 3.1 Answers
+Git installed successfully 
+Configured name: Orit Yohannes
+Configured email: oyohannes1@student.gsu.edu
