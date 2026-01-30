@@ -1,0 +1,3 @@
+# 5.2.3.3 Excercise
+# Using type(), we can verify that multiplying two integers returns an int, while dividing two integers with "/" returns a float. 
+# Python returns a float to ensure mathmetical correctness, even when the result happens to be a whole number.
