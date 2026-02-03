@@ -1,0 +1,100 @@
+Chapter 2: Unix Shell Operating System
+Introduces the Unix shell as a foundational tool for interacting with a computer system
+through text-based commands. It highlights how the command line enables efficient file
+management, automation, and reproducible workflows.
+
+Key Points
+- Core commands include:
+  - ls (list files)
+  - cd (change directory)
+  - pwd (show current directory)
+  - mkdir (create directory)
+  - touch (create file)
+  - rm (remove files)
+- Redirection and pipes (>, >>, |) enable chaining commands and writing output to
+files.
+- Using the shell supports reproducibility, especially when running data processing
+workflows across different systems.
+
+Chapter 3: Version Control
+Explains the importance of version control for managing changes in software and data
+analysis projects. It focuses on Git, a widely-used tool that tracks modifications, supports
+collaboration, and preserves project history.
+
+Key Points
+- Version control helps track who made changes, when, and why.
+- Git workflow:
+  1. git init to start a repository
+  2. git add to stage changes
+  3. git commit to save changes with a message
+  4. git log to review project history
+- Branches allow development without affecting the stable main version.
+- Collaboration with GitHub:
+  - Remote repositories allow multiple contributors.
+  - git push uploads changes, git pull downloads changes.
+  - Pull requests enable review and discussion before merging.
+- Merge conflicts can occur when multiple users edit the same lines; these must be
+resolved manually.
+- Git is not suitable for large datasets; Datalad is recommended for data versioning.
+
+Chapter 4: Computational Environments & Containers
+Focuses on managing computational environments to ensure reproducibility and
+portability. It introduces containers as a modern solution for packaging software,
+dependencies, and configurations together.
+
+Key Points
+- A computational environment includes:
+  - Operating system
+  - Software packages and dependencies
+  - Configuration settings
+- Containers package code, libraries, and runtime environments into a self-contained
+unit.
+- Docker is the most widely-used container platform:
+  - Dockerfile defines the environment setup.
+  - Image is the packaged environment.
+  - Container is a running instance of an image.
+- Containers ensure code runs consistently across different machines, improving
+reproducibility.
+- They are essential for sharing research workflows and running complex analysis
+pipelines.
+
+Chapter 5: A Brief Introduction to Python
+Introduces Python as a core language for scientific computing, emphasizing readability,
+flexibility, and broad applicability in research and industry.
+
+Key Points
+- Python is a high-level, interpreted language:
+  - Code executes line by line
+- Python emphasizes readable, intuitive syntax:
+  - English-like keywords
+  - Indentation enforces structure and clarity
+- Python is general-purpose:
+  - Used in data science, neuroimaging, web development, and industry
+- Strong community and ecosystem:
+  - Extensive libraries, documentation, and support
+- Widely used in neuroimaging research and required for many data science roles
+
+Chapter 6: The Python Environment
+Discusses tools and practices that support efficient Python development, including
+editors, debugging, testing, and performance profiling.
+
+Key Points
+- A development environment includes tools to:
+  - Write
+  - Run
+  - Debug
+  - Test code
+- Code-specific editors improve productivity by offering:
+  - Syntax and error highlighting
+  - Automatic code completion
+  - Integrated execution and debugging
+- Debugging is a normal and unavoidable part of programming:
+  - print() inspects values and assumptions
+  - assert checks conditions and fails early with meaningful errors
+  - pdb (program database) allows pausing execution to inspect program state
+- Testing improves code reliability:
+  - Unit tests verify individual functions
+  - Automated tests prevent regressions and support refactoring
+- Profiling measures performance and scalability:
+  - %timeit evaluates runtime
+  - Scaling analysis is critical for large datasets and neuroimaging workflows
