@@ -607,3 +607,111 @@ Scaling performance
 - Test runtime as input size increases
 - Helps predict performance on large datasets
 - Critical for neuroscience/neuroimaging workflows
+
+
+Chapter 7: Sharing Code with Others
+
+What Should Be Shareable?
+-	Jupyter notebooks are great for:
+  o	Prototyping 
+  o	Exploring
+  o	Presenting Ideas
+-	They are not good for:
+  o	Reusable functions
+  o	Testing
+  o	Sharing code with others
+-	Rule: Prototype in notebooks should move reuseable code into .py files
+-	Reuseable code should:
+  o	Be modular (built from independent and offer customization)
+  o	Be separated into a library
+  o	Be packaged into a library
+
+From Notebooks to Module
+-	Original problem:
+  o	File reading 
+  o	Calculations
+  o	Writing output all mixed together can lead to being not reuseable
+-	Bad Pattern:
+  o	Read data -> compute -> write output
+-	Good software engineering = separation of concerns
+  o	One part: calculations
+  o	One part: data handling
+  o	One part: visualizations
+-	Step 1: Turn calculations into functions
+  o	Def calculate_area(r): 
+  o	Def calculate_area(r):
+
+Move Functions into a Module
+-	Create a file: geometry.py
+-	Add doctrings (NumPy style):
+  o	What the function does
+  o	Parameters
+  o	Returns
+-	Why?
+  o	Others can understand
+  o	Tools can auto-document it
+  o	You can understand it 6 months later
+
+Importing the Module
+-	Python import order:
+  o	Looks in current working directory
+  o	Looks in Python path
+-	Now your script becomes
+  o	Import geometry as geo
+  o	Geo.calcuate_area(…)
+-	You have moved from:
+  o	Script code -> reuseable module
+
+From Module to Package (Library)
+-	Problem: Module only works if it sits next to your script
+-	Solution: Turn it into a package that can be installed anywhere
+
+Understanding import Deeper
+-	If not found locally, Python searches sys.path
+-	You could manaually add paths, but don’t
+-	Instead use setuptools and pyproject.toml
+
+The pyproject.toml File (Very Important)
+-	This is what makes your code:
+  o	Installable
+  o	Shareable
+  o	Recognized as a real Python library
+-	Proper Project Structure
+
+What pyproject.toml Defines
+1.	Build system – setuptools
+2.	Metadata
+  a.	Name
+  b.	Authors
+  c.	Description
+  d.	Version
+3.	Dependencies 
+  a.	Requires-python
+  b.	Pandas==2.2.2
+4.	License (MIT rec)
+5.	Where packages are
+  a.	Where = [“src’]
+  b.	Include = [“geometry*”]
+
+Testing and Continuous Integration
+-	Testing is critical for reuseable code
+-	Add tests: tests/test_circle.py
+-	Ex: 
+Def test_calculate_area():
+	Assert calculate_area(1) == pi
+-	Use Pytest
+  o	Detects files starting with test_
+  o	Runs all tests automatically 
+-	Continuous Integration
+  o	GitHub Actions can 
+    	Run tests every time you push code
+    	Prevent broken code from being merged
+    	Show exactly what change broke things
+
+Software Citation (very important for research)
+-	Software should be cited like papers
+-	To make citable: Mint a DOI
+-	Zendo
+  o	Creates DOI for each version
+  o	Lets other cite the exact version you need
+-	Important rule: Always cite the version of software used in research
