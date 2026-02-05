@@ -98,3 +98,20 @@ Key Points
 - Profiling measures performance and scalability:
   - %timeit evaluates runtime
   - Scaling analysis is critical for large datasets and neuroimaging workflows
+
+Chapter 7: Share Code with Others
+Focuses on turning analysis code into reusable scientific software that other, and your future self, can easily install, understand, test, and use. 
+
+Key Points
+-	Don’t keep important code only in notebooks
+  o	Move reusable code into .py files
+-	Keep code organized 
+-	Put related function into one file (a module)
+-	Turn that file into a folder with ___init___.py (a package)
+  o	Makes it easier to import and reuse
+-	Organize your project like a real software project
+-	Use pyproject.toml so your code can be installed with python -m pip install
+-	Write simple tests to make sure your function work (using Pytest)
+-	Use GitHub to automatically run tests when code changes
+-	Add documentation so others understand how to use your code
+-	Use Zendo (repo archives research software, data, and code) to give software a Digital Object Identifier (DOI) so it can be cited
