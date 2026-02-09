@@ -715,3 +715,226 @@ Software Citation (very important for research)
   o	Creates DOI for each version
   o	Lets other cite the exact version you need
 -	Important rule: Always cite the version of software used in research
+
+Chapter 8: The Scientific Python Ecosystem
+-	What is scientific computing
+	o	Working with scientific data
+	o	Often called numerical computing because data are stored as numbers
+	o	The fundamental structure used is the array 
+-	What is an ecosystem?
+	o	Many independent tools and libraries that interoperate
+	o	No central authority, tools evolve organically
+-	Key tool: NumPy
+	o	Provides powerful, lightweight implementation of arrays
+	o	Backbone of scientific Python 
+
+Numerical Computing in Python
+-	From naïve loops to N-dimensional arrays
+	o	Tabular data -> 2D (rows x columns)
+	o	Neuroscience data -> naturally multi-dimensional
+			1D: EEG time series
+			2D: EEG channels or MRI slice
+			3D: Brain Volume 
+			4D: fMRI (3D space & time)
+			5D: subjects added as another dimension
+	o	Properties of arrays
+			Continuous (no gaps)
+			Homogenous (same data type)
+			Predictable dimensions
+	o	Ex fMRI data set scale
+			20 subjects x 1800 timepoints x 100 x 100 x 100 voxels = 36 billion observations
+	o	Don’t use nested Python loops for array data access because:
+			Must check every voxel even if you only need one
+			Extremely slow
+			Terrible time complexity
+	o	Slight improvement: list indexing 
+			Better than nested loops
+			Still inefficient 
+			•	Python lists not optimized for heavy numerical indexing 
+			•	No native matrix/math operations
+			Not suitable for large scientific data (use NumPy arrays)
+
+Introducing NumPy
+-	Core structure: ndarray (n-dimensional array)
+-	Homogenous data type
+-	Optimized memory layout
+-	Fast indexing and math operations
+-	Import numpy as np
+
+Creating ndarrays 
+-	Arr1 = np.array([1,1, 2, 3, 5])
+-	Shape= dimensions of array
+-	Dtype = Bytes per element
+-	Strides = Bytes to skips to move along a dimension
+-	Np.zero = filled with zeros 
+
+Neuroscience data in arrays
+-	Bold.shape = (64, 64, 25, 180)
+	o	64 x 64 voxels per slice
+	o	25 slices
+	o	180 timepoints
+-	Strides explain how many bytes to jump to move:
+	o	Within row
+	o	To next row
+	o	To next slice
+	o	To next timepoint
+Indexing arrays
+-	Like lists but more powerful
+-	1D indexing
+	o	Arr1[0]
+	o	Arr1[-2]
+	o	Arr1[2:5]
+	o	Arr1[:4]
+-	Multidimensional indexing
+	o	Arr2[0] # first row
+	o	Arr2[0,0] # first element
+	o	Arr2[1,2] # row 2, col 3
+-	Slicing with “:”
+	o	Bold[32,32, 12, :] # voxel across all time
+	o	Bold[32,32,:, 0] # center voxel across slices
+	o	Bold[:,:,12, 0] # full slice at time 0
+	o	Reduces dimensions and extracts sub arrays
+-	Conditioning (Boolean) indexing
+		Mask = bold > 0 
+		Bold[mask]
+	o	Creates Boolean array
+	o	Pulls only values meeting condition
+	o	Useful for thresholding before stats
+-	Arithmetic with arrays (vectorization)
+	o	Numpy perfroms math element-wise
+		Bold + 1000
+		Bold / 2
+		Bold1 + bold2
+	o	This is classed vectorized computation, no loops needed
+
+Chapter 9: Manipulating Tabular Data with Pandas
+What is “tidy” tabular data?
+-	Rows = observations (e.g. subjects)
+-	Column = variable (e.g. Age, Gender)
+-	Easy to query, summarize, and feed into ML tools 
+-	This format is called tidy data
+
+Why Pandas
+-	Built for 2D tabular data
+-	Stores metadata (column name, index label, data type)
+-	Handles mixed data types (numbers + strings + NaNs (missing value))
+-	Core object: DataFrame
+-	1D version of a column: Series
+
+Creating and Reading Data
+-	Create a DataFrame
+-	Read from CSV/URL
+	o	Index_col sets a unique row identifier
+	o	Pandas supports many formats
+
+Understanding Your Data
+-	Preview: subjects.head()
+-	Structure and missing data: subjects.info()
+	o	Shows data types and non-null counts
+-	statistical summary: subjects.describe()
+	o	Mean, std, min, max, quartiles (ignores NaNs)
+
+Indexing & Selecting Data
+-	Row selections
+	o	By label:.loc
+			Subjects.loc[“subject_000”]
+	o	By position: .iloc
+			Subjects.iloc[0]
+-	Column selection
+	Subjects[“Age”] # Series
+	Subjects[[“Age”, “IQ”]] # DataFrame
+-	Slicing rows & columns 
+	Subjects.loc[“sub_005”: “sub_010”, [“Age”, “Gender”]]
+	Subjects.iloc[0, 2:5]
+
+Computing with Columns (Series)
+-	Column statistics 
+	o	Subjects.mean(numeric_long=True)
+-	Arithmetic (vectorized)
+	Subjects[“Age_standard”] = (
+    	Subjects{“Age”] – subjects[“Age”].mean()
+) / Subjects{“Age”].std()
+-	Column to column math
+	o	Subjects[“IQ_sub_diff”] = subjects[“IQ_Vocab”] – subjects[“IQ_Matrix”]
+			If either value is NaN -> result is NaN
+
+Boolean Filtering (Very Important)
+-	Create condition
+	o	Subjects[“age_less_than_10”] = subjects[“Age”] < 10
+-	Filter rows
+	o	Kids = subjects[subjects[“age_less_than_10”]]
+-	Remove nulls
+	Subjects[subjects[“IQ”].notnull()]
+	# or faster:
+	Subjects.dropna(subset=[“IQ”])
+
+Multindex (Grouping by multiple variables)
+	Multi = subjects.set.index([“Gender”, “age_less_than_10”])
+	Multi.loc[“Male”, True].mean(numeric_only=True)
+
+Split-Apply-Combine (groupby)
+-	Most important Pandas pattern
+	Groups = subjects.groupby(“Gender”)
+	Groups.mean 
+-	Multipule groups:
+		Subjects.groupby([“Gender”, “age_less_than_10]).mean()
+
+Joining Tables (Real Data Work)
+-	Concatenation (stack tables)
+	o	Pd.concat([df1,df2])
+-	Merge (database-style join)
+	o	Used when tables share a key (e.g. subjectID)
+	Joined = pd.merge(
+		Nodes, subjects,
+		Left_index=True
+		Right_index=True
+	)
+	o	Combines subject info with diffusion MRI node data
+	o	Enables grouped analysis across both datasets
+
+Grouping After Merge (Power Move)
+	Age_groups = joinged.groupby(
+		[“age_less_than_10”, “tractID”, “nodeID”]
+	)
+	Group_means = age_groups.mean()
+-	This produces: 
+	o	2 age groups x 20 tracts x 100 nodes = 4000 summaries
+
+
+Chapter 10: Visualizing Data with Python
+Why Visualize Data
+-	Large complex datasets are hard to interpret in raw form
+-	Data visualization helps uncover patterns, detect anomalies, and communicate findings clearly
+-	Skills required: data manipulation and effective visualization
+
+Matplotlib
+-	Purpose: Open-source Python library for creating customizable plots
+-	History: Created by John Hunter (~20 years ago) for neuroscience datal now widely used in many fields
+-	Key features: Fine-grained control over plot elements, supports multiple plot types
+
+Core Concepts
+-	Figure: container holding one or more plots (like a page)
+-	Axes: individual plot/canvas where is data is drawn
+-	API: use pyplot (import matplotlib.pyplot as plt) for most control
+
+Small Multiples
+-	Useful when a dataset has many variables 
+-	Strategy: create multiple subplots within the same figure for clarity
+-	Shows patterns across multiple groups or variables
+
+Scatter Plots
+-	Plot points with one variable on x-axis and another on y-axis
+-	Useful for comparing datasets and spotting trends 
+-	Can add y=x line to highlight differences between groups
+
+Statistical Visualizations (Seaborn)
+-	Seaborn: built on pandas and matplotlib; elegant and simple stats visuals
+-	Supports many plot types: bar, swarm, violin, boxplots, regression (lmplot)
+-	Bar chart
+-	Swarmplot
+-	Violin plot
+-	Box plot
+-	Linear model plt (lmplot)
+
+Exploring Image Data
+-	Visualize raw or processed image data to check for anomalies
