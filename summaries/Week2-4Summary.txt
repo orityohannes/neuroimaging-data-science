@@ -115,3 +115,44 @@ Key Points
 -	Use GitHub to automatically run tests when code changes
 -	Add documentation so others understand how to use your code
 -	Use Zendo (repo archives research software, data, and code) to give software a Digital Object Identifier (DOI) so it can be cited
+
+Chapter 8: The Scientific Python Ecosystem
+Introduces scientific computing in Python and explain how NumPy arrays are the foundation for working efficiently with large, multi-dimensional scientific data like neuroimaging and EEG. 
+
+Key Points
+-	Scientific computing works with numerical data stored in multi-dimentsion arrays 
+-	NumPy is the core library that provides fast, memory-efficient arrays (ndarray) 
+-	Scientific data (EEF, MRI, fMRI) is naturally 1D-5D, so arrays are ideal
+-	Arrays are continuous, homogenous, and have a clear shape
+-	Avoid nested loops and Python lists for large data, they are too slow
+-	Use ndarray features:
+  -	Shape, dtype, and strides describe how data is stored
+  -	Powerful indexing and slicing to extract sub-data
+  -	Boolean masks to filter values
+  -	Vectorized math for fast computations
+
+Chapter 9: Manipulating Tabular Data with Pandas
+Introduces Pandas as the primary tool for working with tidy, tabular data in Python and shows how to efficiently explore, filter, compute, group, and merge real datasets. 
+
+Key Points
+-	Tiny data: rows = observations, columns = variables
+-	Core objects: DataFrame (2D), Series (1D)
+-	Handles mixed types and missing values (NaN)
+-	Preview: .head(), .info(), .describe()
+-	Select/index: .loc (labels), .iloc (positions)
+-	Vectorized computations and column operations
+-	Boolean filtering to select rows
+-	Grouping: .groupby() for split-apply-combine, Multindex for multiple variables
+-	Combining: pd.concat() stack tables, pd.merge() joins on keys
+
+Chapter 10: Visualizing data with Python
+Introduces techniques for visualizing data in Python to explore complex datasets, detect patterns, and communicate results effectively. 
+
+Key Points
+-	Purpose: make complex data interpretable, reveal patterns, detect anomalies, communicate findings
+-	Matplotlib: open source, customizable plots; uses Figure (container) and Axes (Plot canvas); pyplot AP (plt) for control.
+-	Small multiples: create multipule subplots to compare many variables at once
+-	Scatter plots: compare two variables; can ass y=x line to highlight differences
+-	Seaborn: built on pandas and matplotlib; elegant statistical visualizations; supports bar, swarm, violin, boxplots, regression (lmplot)
+-	Image data: visualize raw or processed images to check anomalies (e.g. MRI/fMRI slices)
+
