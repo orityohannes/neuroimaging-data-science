@@ -20,4 +20,16 @@ Key Points
   -	Data Quality Check: Introduces temporal signal-to-noise ratio (tSNR) to measure MRI data reliability.
   -	Automated Tools: MRIQC and Nipype can compute quality metrics and generate reports using BIDS datasets. 
 
+Chapter 13: Using Nibabel to Align Different Measurements
+Explains how MRI scans with different resolutions, orientation, and fields of view can be aligned using metadata stored in MIfTI files, especially the affine matrix.
+
+Key Points
+  -	MRI scans like BOLD and T1 often have different shapes and resolutions, so they do not align automatically.
+  -	Image registration aligns scans taken under different conditions or positions.
+  -	The affine matrix (4×4) in each NIfTI file describes voxel size, orientation, and position in the scanner.
+  -	MRI coordinates often use the RAS system (Right, Anterior, Superior).
+  -	Matrix multiplication and the inverse affine help convert coordinates between scans.
+  -	Nibabel can resample one scan into another’s space, so they align.
+  -	Resampling uses interpolation, which slightly changes data values.
+
 
