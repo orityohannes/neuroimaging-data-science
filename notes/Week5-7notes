@@ -107,3 +107,87 @@ Why is BIDS Important
     o	Standarized data structures
     o	Interoperability
     o	Reproducibility automation
+
+
+Chapter 13: Using Nibabel to Align Different Measurements
+ -	When analyzing MRI data, we often need to combine data from different scans
+ -	Scans can differ in Resolution, Field of view, Orientation, etc. 
+ -	The images do not align automatically, and we must use metadata stored in the files to align them.
+ -	Nibabel helps with this by using information stored in the affine matrix inside NIfTI files.
+
+Loading MRI Data with Nibabel
+ -	Bold Scan
+   o	Lower resolution
+   o	Smaller field of view
+ -	T1 Scan
+   o	Higher resolution
+   o	Larger field of view
+ -	Because of this
+   o	The shapes of the arrays do not match
+   o	A voxel in BOLD does not directly correspond to a voxel in T1
+
+Image Registration
+ -	Aligning two images of the same object taken in different positions or conditions 
+ -	Reasons images may differ
+   o	Different scanning parameters
+   o	Subject movement
+   o	Scan taken on different days
+
+The Affine Matrix
+ -	Each NIfTI file stores a 4 x 4 affine matrix in its header
+ -	This matrix describes
+   o	Position of the scan in the scanner
+   o	Orientation
+   o	Scaling (voxel size)
+   o	Translation (shift)
+
+Coordinate Frames
+ -	A coordinate frame defines
+  o	Origin
+  o	Axes directions
+  o	Measurement units
+ -	In MRI, the origin is the scanner isocenter
+ -	Typical orientation used: RAS coordinate system
+  o	R = Right
+  o	A = Anterior (front)
+  o	S = Superior (top)
+ -	Meaning coordinates increase
+  o	Rightward
+  o	Toward the front of the brain
+  o	Toward the top of the head
+ -	Negative values mean:
+  o	Left
+  o	Posterior
+  o	Inferior
+
+Difference Between Image Orientations
+ -	Even when viewing the middle slice of two scans
+  o	BOLD slice may axial (horizontal slices from top to bottom)
+  o	T1 slice may be sagittal (vertical slices from side to side)
+ -	This happens because the coordinate frames differ
+
+Array Coordinate System
+ -	MRI data arrays also define coordinates: [ I, j, k]
+ -	These correspond to voxel indices in the image array
+
+Matrix Multiplication (Concept)
+ -	Matrices represent transformations such as:
+  o	Scaling 
+  o	Rotation
+o	Translation
+ -	Matrix multiplication combines transformations
+
+Using the Affine Matrix
+ -	Includes:
+  o	Scaling (voxel size)
+  o	Rotation (orientation)
+  o	Translation (position shift)
+
+Interpolation
+ -	When resampling images
+  o	Data values are slightly altered
+  o	Interpolation or smoothing is applied
+ -	Resampling back and forth does not produce identical data
+ -	High resolution = lower resolution
+ -	Loses less information than the reverse
+
