@@ -1,0 +1,15 @@
+# Section 5 Exercises
+# 5.2.3.3 
+Using type(), we can verify that multiplying two integers returns an int, while dividing two integers with "/" returns a float. 
+Python returns a float to ensure mathmetical correctness, even when the result happens to be a whole number.
+
+# 5.2.3.5
+text = "supercalifragilisticexpialidocious"
+number_of_li = text.count("li")
+print(number_of_li)
+
+# 5.2.3.7
+In Python, the Boolean values True and False are equal to certain integers. Using the equality operator "=="
+True: equal to integer 1 because 1 == True, which True
+False: equal to integer 0 because 0 == False, which is True 
+All other integers are not equal to True or False.

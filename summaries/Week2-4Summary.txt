@@ -1,0 +1,158 @@
+Chapter 2: Unix Shell Operating System
+Introduces the Unix shell as a foundational tool for interacting with a computer system
+through text-based commands. It highlights how the command line enables efficient file
+management, automation, and reproducible workflows.
+
+Key Points
+- Core commands include:
+  - ls (list files)
+  - cd (change directory)
+  - pwd (show current directory)
+  - mkdir (create directory)
+  - touch (create file)
+  - rm (remove files)
+- Redirection and pipes (>, >>, |) enable chaining commands and writing output to
+files.
+- Using the shell supports reproducibility, especially when running data processing
+workflows across different systems.
+
+Chapter 3: Version Control
+Explains the importance of version control for managing changes in software and data
+analysis projects. It focuses on Git, a widely-used tool that tracks modifications, supports
+collaboration, and preserves project history.
+
+Key Points
+- Version control helps track who made changes, when, and why.
+- Git workflow:
+  1. git init to start a repository
+  2. git add to stage changes
+  3. git commit to save changes with a message
+  4. git log to review project history
+- Branches allow development without affecting the stable main version.
+- Collaboration with GitHub:
+  - Remote repositories allow multiple contributors.
+  - git push uploads changes, git pull downloads changes.
+  - Pull requests enable review and discussion before merging.
+- Merge conflicts can occur when multiple users edit the same lines; these must be
+resolved manually.
+- Git is not suitable for large datasets; Datalad is recommended for data versioning.
+
+Chapter 4: Computational Environments & Containers
+Focuses on managing computational environments to ensure reproducibility and
+portability. It introduces containers as a modern solution for packaging software,
+dependencies, and configurations together.
+
+Key Points
+- A computational environment includes:
+  - Operating system
+  - Software packages and dependencies
+  - Configuration settings
+- Containers package code, libraries, and runtime environments into a self-contained
+unit.
+- Docker is the most widely-used container platform:
+  - Dockerfile defines the environment setup.
+  - Image is the packaged environment.
+  - Container is a running instance of an image.
+- Containers ensure code runs consistently across different machines, improving
+reproducibility.
+- They are essential for sharing research workflows and running complex analysis
+pipelines.
+
+Chapter 5: A Brief Introduction to Python
+Introduces Python as a core language for scientific computing, emphasizing readability,
+flexibility, and broad applicability in research and industry.
+
+Key Points
+- Python is a high-level, interpreted language:
+  - Code executes line by line
+- Python emphasizes readable, intuitive syntax:
+  - English-like keywords
+  - Indentation enforces structure and clarity
+- Python is general-purpose:
+  - Used in data science, neuroimaging, web development, and industry
+- Strong community and ecosystem:
+  - Extensive libraries, documentation, and support
+- Widely used in neuroimaging research and required for many data science roles
+
+Chapter 6: The Python Environment
+Discusses tools and practices that support efficient Python development, including
+editors, debugging, testing, and performance profiling.
+
+Key Points
+- A development environment includes tools to:
+  - Write
+  - Run
+  - Debug
+  - Test code
+- Code-specific editors improve productivity by offering:
+  - Syntax and error highlighting
+  - Automatic code completion
+  - Integrated execution and debugging
+- Debugging is a normal and unavoidable part of programming:
+  - print() inspects values and assumptions
+  - assert checks conditions and fails early with meaningful errors
+  - pdb (program database) allows pausing execution to inspect program state
+- Testing improves code reliability:
+  - Unit tests verify individual functions
+  - Automated tests prevent regressions and support refactoring
+- Profiling measures performance and scalability:
+  - %timeit evaluates runtime
+  - Scaling analysis is critical for large datasets and neuroimaging workflows
+
+Chapter 7: Share Code with Others
+Focuses on turning analysis code into reusable scientific software that other, and your future self, can easily install, understand, test, and use. 
+
+Key Points
+-	Don’t keep important code only in notebooks
+  o	Move reusable code into .py files
+-	Keep code organized 
+-	Put related function into one file (a module)
+-	Turn that file into a folder with ___init___.py (a package)
+  o	Makes it easier to import and reuse
+-	Organize your project like a real software project
+-	Use pyproject.toml so your code can be installed with python -m pip install
+-	Write simple tests to make sure your function work (using Pytest)
+-	Use GitHub to automatically run tests when code changes
+-	Add documentation so others understand how to use your code
+-	Use Zendo (repo archives research software, data, and code) to give software a Digital Object Identifier (DOI) so it can be cited
+
+Chapter 8: The Scientific Python Ecosystem
+Introduces scientific computing in Python and explain how NumPy arrays are the foundation for working efficiently with large, multi-dimensional scientific data like neuroimaging and EEG. 
+
+Key Points
+-	Scientific computing works with numerical data stored in multi-dimentsion arrays 
+-	NumPy is the core library that provides fast, memory-efficient arrays (ndarray) 
+-	Scientific data (EEF, MRI, fMRI) is naturally 1D-5D, so arrays are ideal
+-	Arrays are continuous, homogenous, and have a clear shape
+-	Avoid nested loops and Python lists for large data, they are too slow
+-	Use ndarray features:
+  -	Shape, dtype, and strides describe how data is stored
+  -	Powerful indexing and slicing to extract sub-data
+  -	Boolean masks to filter values
+  -	Vectorized math for fast computations
+
+Chapter 9: Manipulating Tabular Data with Pandas
+Introduces Pandas as the primary tool for working with tidy, tabular data in Python and shows how to efficiently explore, filter, compute, group, and merge real datasets. 
+
+Key Points
+-	Tiny data: rows = observations, columns = variables
+-	Core objects: DataFrame (2D), Series (1D)
+-	Handles mixed types and missing values (NaN)
+-	Preview: .head(), .info(), .describe()
+-	Select/index: .loc (labels), .iloc (positions)
+-	Vectorized computations and column operations
+-	Boolean filtering to select rows
+-	Grouping: .groupby() for split-apply-combine, Multindex for multiple variables
+-	Combining: pd.concat() stack tables, pd.merge() joins on keys
+
+Chapter 10: Visualizing data with Python
+Introduces techniques for visualizing data in Python to explore complex datasets, detect patterns, and communicate results effectively. 
+
+Key Points
+-	Purpose: make complex data interpretable, reveal patterns, detect anomalies, communicate findings
+-	Matplotlib: open source, customizable plots; uses Figure (container) and Axes (Plot canvas); pyplot AP (plt) for control.
+-	Small multiples: create multipule subplots to compare many variables at once
+-	Scatter plots: compare two variables; can ass y=x line to highlight differences
+-	Seaborn: built on pandas and matplotlib; elegant statistical visualizations; supports bar, swarm, violin, boxplots, regression (lmplot)
+-	Image data: visualize raw or processed images to check anomalies (e.g. MRI/fMRI slices)
+

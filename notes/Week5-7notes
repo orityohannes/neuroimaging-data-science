@@ -1,0 +1,193 @@
+Chapter 11: Data Science Tools for Neuroimaging
+
+ Neuroimaging in Python (NiPy)
+  -	Collection of Python-based tools specifically developed for neuroimaging research, covering a wide range of data analysis tasks.
+
+Reading and Writing Data
+  -	 Nibabel is the foundational library used to read and write common neuroimaging file formats into computer memory. It serves a similar role for NiPy as Numpy does for general scientific computing 
+
+MRI Data Analysis Tools
+  -	Functional MRI (fMRI): Tools like BrainIAK and Nilearn focus on machine learning analysis, while fitlins and glmsingle are used for Generalized Linear Models (GLM)
+  -	Diffusion MRI (dMRI): DIPY (Diffusion Imaging in Python) provides the core algorithms for white matter analysis. Specialized tools built on DIPY include DMIPY (microstructure modeling), pyAFQ (tract delineation), and NDMG (connectivity matrices).
+  -	Structural MRI: The Advanced Normalization Tools (ANTs) library handles image registration and segmentation, accessible in Python via antspy.
+
+Other Modalities
+  -	MNE is the primary project for electrophysiology data, supporting MEG, EEG, and ECoG analysis, including frequency spectrums and source localization
+
+Pipeline Unification with Nipype
+  -	Nipype provides a uniform Python interface to various software libraries, including non-Python tools like FSL, AFNI, and FreeSurfer
+  -	It allows researchers to create reproducible pipelines where outputs of one step automatically become inputs for the next. 
+
+The Brain Imaging Data Structure (BIDS)
+  -	BIDS is a community-developed standard for organizing neuroimaging data and metadata to ensure it is both machine-readable and human-readable.
+
+The BIDS Specification
+  -	Folder structure: Data is organized hierarchically: sub-[id]/[modality]
+  -	Naming Conventions: Filenames use a sequence of key-value pairs separated by underscores and a specific “suffix” to describe the data type.
+  -	Metadata: Every data file is accompanied by a JSON ‘sidecar” file containing metadata, following an “inheritance principle” where metadata at higher levels applies to lower level unless overridden. 
+  -	BIDS Derivatives: This extension defines how to organize data that has been transformed or preprocessed, ensuring the relationship between raw and processed data remains clear
+
+The BIDS Ecosystem
+  -	Data Sharing: Repos like OpenNeuro use BIDS to automatically index meta data and make sharing/re-using datasets significantly easier.
+  -	BIDS Apps: These are containerized applications-such as fMRIPrep for preprocessing and MRIQC for quality control, that take BIDS datasets as input and run with minimal manual configuration
+  -	Utility Libraries: PyBIDS is a Python package used to programmatically query and manipulate BIDS datasets
+
+Chapter 12: Reading Neuroimaging Data with Nibabel
+-	The first step in neuroimaging analysis is reading data from files
+-	Many formats exists, but the most common is NIfTI (Neuroimaging Informatics Technology Initiative)
+  o	Widely adopted
+  o	Required by the Brain Imaging Data Structure (BIDS) standard for raw MRI data
+  o	Supported by the Python library nibabel 
+
+Important Design Principle of Nibabel 
+  -	Nibabel uses lazy loading:
+    o	Only reads the header initially
+    o	Does NOT load full data into memory immediately 
+    o	Saves memory and computation time
+
+What is in the header?
+  -	Metadata
+  -	Shape of data
+  -	Voxel size
+  -	Data type
+  -	Affine transformation info 
+
+Reading the Actual Data
+  -	Get_fdata():
+    o	Loads full data into memory
+    o	Coverts to 64-bit floating point
+    o	Works correctly in ~99% of cases
+
+Assessing MRI Data Quality
+  -	MRI data quality varies significantly
+  -	Common issues
+    o	Motion artifacts
+    o	Scanner noise
+    o	Population differences
+  -	Poor data quality can lead to incorrect conclusions
+
+Temporal Signal-to-Noise Ratio (tSNR)
+  -	Definition: mean signal across time / standard deviation across time
+  -	For each voxel
+    o	Compute mean across time
+    o	Divide by standard deviation across time
+  -	Higher tSNR = better signal stability
+
+Method 1: Using NumPy
+  -	Produces a 3D volume of tSNR values
+
+Method 2: Using Nipype
+  -	Provides interfaces to many neuroimaging tools
+  -	Wraps neuroimaging tools
+  -	Produces output files (not just arrays)
+  -	Useful for building pipeline
+
+Method 3: Using MRIQC (BIDS App)
+  -	MRIQC is a BIDS App distributed via Docker
+  -	What happens
+    o	MRIQC reads BIDS dataset
+    o	Computes multiple quality metrics
+    o	Outputs a derivatives BIDS dataset
+
+MRIQC Output Structure
+  -	Outputs follow BIDS derivatives format
+  -	JSON files contain:
+    o	Median tSNR
+    o	Motion metrics
+    o	May other QC metrics
+  -	HTML files contain:
+    o	Visual diagnostics
+
+Why is BIDS Important
+  -	Without BIDS
+    o	MRIQC wouldn’t know where to find data
+    o	Outputs wouldn’t be organized predictably
+    o	Automations would be much harder
+  -	BIDS enables
+    o	Standarized data structures
+    o	Interoperability
+    o	Reproducibility automation
+
+
+Chapter 13: Using Nibabel to Align Different Measurements
+ -	When analyzing MRI data, we often need to combine data from different scans
+ -	Scans can differ in Resolution, Field of view, Orientation, etc. 
+ -	The images do not align automatically, and we must use metadata stored in the files to align them.
+ -	Nibabel helps with this by using information stored in the affine matrix inside NIfTI files.
+
+Loading MRI Data with Nibabel
+ -	Bold Scan
+   o	Lower resolution
+   o	Smaller field of view
+ -	T1 Scan
+   o	Higher resolution
+   o	Larger field of view
+ -	Because of this
+   o	The shapes of the arrays do not match
+   o	A voxel in BOLD does not directly correspond to a voxel in T1
+
+Image Registration
+ -	Aligning two images of the same object taken in different positions or conditions 
+ -	Reasons images may differ
+   o	Different scanning parameters
+   o	Subject movement
+   o	Scan taken on different days
+
+The Affine Matrix
+ -	Each NIfTI file stores a 4 x 4 affine matrix in its header
+ -	This matrix describes
+   o	Position of the scan in the scanner
+   o	Orientation
+   o	Scaling (voxel size)
+   o	Translation (shift)
+
+Coordinate Frames
+ -	A coordinate frame defines
+  o	Origin
+  o	Axes directions
+  o	Measurement units
+ -	In MRI, the origin is the scanner isocenter
+ -	Typical orientation used: RAS coordinate system
+  o	R = Right
+  o	A = Anterior (front)
+  o	S = Superior (top)
+ -	Meaning coordinates increase
+  o	Rightward
+  o	Toward the front of the brain
+  o	Toward the top of the head
+ -	Negative values mean:
+  o	Left
+  o	Posterior
+  o	Inferior
+
+Difference Between Image Orientations
+ -	Even when viewing the middle slice of two scans
+  o	BOLD slice may axial (horizontal slices from top to bottom)
+  o	T1 slice may be sagittal (vertical slices from side to side)
+ -	This happens because the coordinate frames differ
+
+Array Coordinate System
+ -	MRI data arrays also define coordinates: [ I, j, k]
+ -	These correspond to voxel indices in the image array
+
+Matrix Multiplication (Concept)
+ -	Matrices represent transformations such as:
+  o	Scaling 
+  o	Rotation
+o	Translation
+ -	Matrix multiplication combines transformations
+
+Using the Affine Matrix
+ -	Includes:
+  o	Scaling (voxel size)
+  o	Rotation (orientation)
+  o	Translation (position shift)
+
+Interpolation
+ -	When resampling images
+  o	Data values are slightly altered
+  o	Interpolation or smoothing is applied
+ -	Resampling back and forth does not produce identical data
+ -	High resolution = lower resolution
+ -	Loses less information than the reverse
+

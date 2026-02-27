@@ -1,0 +1,8 @@
+10.1.1.1
+The color keywords argument can be added to each ax.plot() call to assign a different named color 
+such as red, blue, or green. To each line so that the three lines are easier to distinguish. 
+
+10.1.2.1
+You would determine the global min and max FA values across the entire dataset (across all tracts, young & old)
+Then inside the loop where each subplot is created you would apply: ax.flat[i].set_ylim([min_FA, max_FA])
+Every subplot uses the same FA scale, so differences between tracts are not visually disorted by different axis limits.

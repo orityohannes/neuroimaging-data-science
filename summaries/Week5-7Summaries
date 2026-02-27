@@ -1,0 +1,35 @@
+Chapter 11: Data Science Tools for Neuroimaging
+Explores specialized Python software and organizational standards designed to handle the complexities of neuroimaging data. Emphasizes the support of reproducible pipelines and automated analysis. 
+
+Key Points
+  -	The NiPy Ecosystem: A family of Python tools specifically focused on neuroimaging data analysis tasks 
+    o	Nibabel: The foundational library used to read and write a variety of common neuroimaging file formats. 
+    o	Modality-Specfic Libraries: specialized tools for fMRI, dMRI, etc.
+    o	Nipype: A library that allows researchers to glue together different software tools into reproducible analysis pipelines
+  -	The Brain Imaging Data Structure (BIDS): A community standard for organizing experimental data metadata to ensure it is both human and machine readable
+    o	Optimization Rules: Data is arranged in a strict hierarchy using specific naming conventions based on key-value pairs. 
+    o	Metadata: JSON “sidecar” files store acquisition parameters and follow an “inheritance principle” to avoid data redundancy
+    o	Ecosystem Benefits: BIDS enables the use of BIDS-Apps like fMRIPrep for automated preprocessing and PyBIDS for programmatic data querying.
+
+Chapter 12: Reading Neuroimaging Data with Nibabel
+Introduces how to load and inspect neuroimaging data files using Python, focusing on the NIfTI (Nueroimaging Informatics Technology Initiative) format and demonstrating how to evaluate MRI data quality before analysis. 
+
+Key Points
+  -	Using Nibabel: Loads NIfTI neuroimaging files and reads metadata first before loading full data into NumPy arrays.
+  -	BIDS-Organized Data: Example dataset from OpenNeuro shows standardized file structures help tools locate and process data.
+  -	Data Quality Check: Introduces temporal signal-to-noise ratio (tSNR) to measure MRI data reliability.
+  -	Automated Tools: MRIQC and Nipype can compute quality metrics and generate reports using BIDS datasets. 
+
+Chapter 13: Using Nibabel to Align Different Measurements
+Explains how MRI scans with different resolutions, orientation, and fields of view can be aligned using metadata stored in MIfTI files, especially the affine matrix.
+
+Key Points
+  -	MRI scans like BOLD and T1 often have different shapes and resolutions, so they do not align automatically.
+  -	Image registration aligns scans taken under different conditions or positions.
+  -	The affine matrix (4×4) in each NIfTI file describes voxel size, orientation, and position in the scanner.
+  -	MRI coordinates often use the RAS system (Right, Anterior, Superior).
+  -	Matrix multiplication and the inverse affine help convert coordinates between scans.
+  -	Nibabel can resample one scan into another’s space, so they align.
+  -	Resampling uses interpolation, which slightly changes data values.
+
+
